@@ -44,7 +44,7 @@ float Renderer::Text::getSY()
     return this->sy_;
 }
 
-float Renderer::Text::getSize()
+FT_UInt Renderer::Text::getSize()
 {
     return this->size_;
 }

@@ -44,6 +44,7 @@ namespace Renderer {
                 fprintf(stderr, "Could not init freetype library\n");
             }
 
+            // @TODO Allow set a font for each Text
             if(FT_New_Face(ft, "fonts/VanillaGalaxies.ttf", 0, &this->freetype_face_)) {
                 fprintf(stderr, "Could not open font\n");
             }
@@ -82,10 +83,35 @@ namespace Renderer {
             // Init Text Shader
             this->shader_->use();
 
+            FT_GlyphSlot g = this->freetype_face_->glyph;
+
+            GLuint textures;
+
+            /* Create a texture that will be used to hold one "glyph" */
+            glActiveTexture(GL_TEXTURE0);
+            glGenTextures(1, &textures);
+            glBindTexture(GL_TEXTURE_2D, textures);
+            glUniform1i(this->shader_tex_pos_, 0);
+
+            /* We require 1 byte alignment when uploading texture data */
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+            /* Clamping to edges is important to prevent artifacts when scaling */
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+            /* Linear filtering usually looks best for text */
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+            /* Set up the VBO for our vertex data */
+            glEnableVertexAttribArray(this->shader_coord_pos_);
+
             for (const auto &weakText : bulkText_) {
 
                 auto text = weakText.lock();
                 if (!text) {
+                    std::cerr << "Text pointer not valid!" << std::endl;
                     continue;
                 }
 
@@ -93,29 +119,6 @@ namespace Renderer {
                 FT_Set_Pixel_Sizes(this->freetype_face_, 0, text->getSize());
                 glUniform4fv(this->shader_color_pos_, 1, text->getColor());
 
-                FT_GlyphSlot g = this->freetype_face_->glyph;
-
-                /* Create a texture that will be used to hold one "glyph" */
-                GLuint tex;
-
-                glActiveTexture(GL_TEXTURE0);
-                glGenTextures(1, &tex);
-                glBindTexture(GL_TEXTURE_2D, tex);
-                glUniform1i(this->shader_tex_pos_, 0);
-
-                /* We require 1 byte alignment when uploading texture data */
-                glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-                /* Clamping to edges is important to prevent artifacts when scaling */
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-                /* Linear filtering usually looks best for text */
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-                /* Set up the VBO for our vertex data */
-                glEnableVertexAttribArray(this->shader_coord_pos_);
                 glBindBuffer(GL_ARRAY_BUFFER, text->getVBO());
                 glVertexAttribPointer(this->shader_coord_pos_, 4, GL_FLOAT, GL_FALSE, 0, 0);
 
@@ -125,8 +128,7 @@ namespace Renderer {
                 /* Loop through all characters */
                 for (char i : text->getText()) {
                     /* Try to load and render the character */
-                    if (FT_Load_Char(this->freetype_face_, i, FT_LOAD_RENDER))
-                        continue;
+                    if (FT_Load_Char(this->freetype_face_, i, FT_LOAD_RENDER)) continue;
 
                     /* Upload the "bitmap", which contains an 8-bit grayscale image, as an alpha texture */
                     glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, g->bitmap.width, g->bitmap.rows, 0, GL_ALPHA, GL_UNSIGNED_BYTE, g->bitmap.buffer);
@@ -154,10 +156,10 @@ namespace Renderer {
                     x_tmp += (g->advance.x >> 6) * text->getSX();
                     y_tmp += (g->advance.y >> 6) * text->getSY();
                 }
-
-                glDisableVertexAttribArray(this->shader_coord_pos_);
-                glDeleteTextures(1, &tex);
             }
+
+            glDisableVertexAttribArray(this->shader_coord_pos_);
+            glDeleteTextures(1, &textures);
         }
 
     };

@@ -38,7 +38,7 @@ namespace Renderer {
         float getSX();
         float getSY();
 
-        float getSize();
+        FT_UInt getSize();
 
         GLfloat* getColor ();
 

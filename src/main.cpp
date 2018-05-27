@@ -14,8 +14,8 @@
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
 
-int main(int argc, char* argv[]) {
-
+int main(int argc, char* argv[])
+{
     Memory::Provider::initPools();
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -44,17 +44,12 @@ int main(int argc, char* argv[]) {
             return EXIT_FAILURE;
         }
 
-        auto shader = std::make_unique<Renderer::Shader>();
-        shader->createGraphicShader(GL_VERTEX_SHADER, "default.vert");
-        shader->createGraphicShader(GL_FRAGMENT_SHADER, "default.frag");
-        shader->link();
-
         auto *SDL_window = window->getWindow();
 
         float sx = 2.0f / SCREEN_WIDTH;
         float sy = 2.0f / SCREEN_HEIGHT;
 
-        GLfloat white_color[4] {1.0f, 1.0f, 1.0f, 1.0f};
+        GLfloat white_color[4] {1.f, 1.f, 1.f, 1.f};
 
         auto text_velocity = std::make_shared<Renderer::Text>(-1 + 8 * sx, 1 - 50 * sy-1.8f, sx, sy, 48, white_color);
         text_velocity->setText("Test");
@@ -78,7 +73,7 @@ int main(int argc, char* argv[]) {
 
             // Adjust FPS
             if (1000/60 > (SDL_GetTicks() - start)) {
-                SDL_Delay(1000/60 - (SDL_GetTicks()-start));
+                SDL_Delay(1000/60 - (SDL_GetTicks() - start));
             }
 
 #ifdef DEBUG

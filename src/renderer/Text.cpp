@@ -15,6 +15,13 @@ Renderer::Text::Text(float x, float y, float sx, float sy, FT_UInt size, GLfloat
     glGenBuffers(1, &vbo_);
 }
 
+void * Renderer::Text::operator new (std::size_t size)
+{
+    return Memory::Provider::getMemory(Memory::PoolType::POOL_TYPE_GENERIC, size);
+}
+
+void Renderer::Text::operator delete (void* ptr, std::size_t size) {}
+
 std::string Renderer::Text::getText()
 {
     return this->text_;

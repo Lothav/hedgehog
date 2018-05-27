@@ -8,12 +8,12 @@ Renderer::BulkText::BulkText() : texts_({}), freetype_face_(nullptr)
 {
     FT_Library ft;
 
-    if(FT_Init_FreeType(&ft)) {
+    if (FT_Init_FreeType(&ft)) {
         fprintf(stderr, "Could not init freetype library\n");
     }
 
     // @TODO Allow set a font for each Text
-    if(FT_New_Face(ft, "fonts/VanillaGalaxies.ttf", 0, &this->freetype_face_)) {
+    if (FT_New_Face(ft, "fonts/VanillaGalaxies.ttf", 0, &this->freetype_face_)) {
         fprintf(stderr, "Could not open font\n");
     }
 

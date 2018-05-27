@@ -27,7 +27,10 @@ namespace Renderer {
 
     private:
 
-        std::vector<std::weak_ptr<Text>> texts_;
+        std::vector<
+            std::weak_ptr<Text>,
+            Memory::Allocator<std::weak_ptr<Text>>
+        > texts_;
 
         Renderer::Shader* shader_;
         GLuint shader_tex_pos_;

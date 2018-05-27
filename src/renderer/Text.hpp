@@ -9,6 +9,7 @@
 #include <GL/glew.h>
 #include <memory>
 #include FT_FREETYPE_H
+#include "../memory/Provider.hpp"
 
 namespace Renderer {
 
@@ -28,6 +29,9 @@ namespace Renderer {
     public:
 
         Text(float x, float y, float sx, float sy, FT_UInt size, GLfloat color[4]);
+
+        void * operator new (std::size_t size);
+        void operator delete (void* ptr, std::size_t size);
 
         std::string getText();
         void setText(std::string text);

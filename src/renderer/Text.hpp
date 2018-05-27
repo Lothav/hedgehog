@@ -18,8 +18,7 @@ namespace Renderer {
     {
         float x_;
         float y_;
-        float sx_;
-        float sy_;
+
         FT_UInt size_;
         GLfloat color_[4];
         std::string text_;
@@ -28,7 +27,7 @@ namespace Renderer {
 
     public:
 
-        Text(float x, float y, float sx, float sy, FT_UInt size, GLfloat color[4]);
+        Text(float x, float y, FT_UInt size, GLfloat color[4]);
 
         void * operator new (std::size_t size);
         void operator delete (void* ptr, std::size_t size);
@@ -38,9 +37,6 @@ namespace Renderer {
 
         float getX();
         float getY();
-
-        float getSX();
-        float getSY();
 
         FT_UInt getSize();
 

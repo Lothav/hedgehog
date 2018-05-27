@@ -12,23 +12,26 @@ namespace Renderer {
 
     private:
 
-        SDL_Window*     window;
-        SDL_Renderer*   renderer;
+        SDL_Window*         window;
+        SDL_Renderer*       renderer;
+        std::array<int, 2>  size_;
 
     public:
 
-        Window(const int screen_width, const int screen_height) : window(nullptr), renderer(nullptr)
+        Window(std::array<int, 2> size) : size_(size), window(nullptr), renderer(nullptr)
         {
             if (SDL_Init(SDL_INIT_VIDEO) < 0) {
                 std::cout << "Could not initialize sdl2: " << SDL_GetError();
                 return;
             }
+
             this->window = SDL_CreateWindow(
-                "Breakout",
+                "",
                 SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                screen_width, screen_height,
-                SDL_WINDOW_SHOWN | SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_OPENGL
+                size[0], size[1],
+                SDL_WINDOW_FULLSCREEN | SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_OPENGL
             );
+
             if (this->window == nullptr) {
                 fprintf(stderr, "Could not create window: %s\n", SDL_GetError());
                 return;
@@ -61,6 +64,11 @@ namespace Renderer {
         SDL_Window* getWindow();
 
         SDL_Renderer* getRenderer();
+
+        std::array<int, 2> getSize()
+        {
+            return this->size_;
+        }
     };
 
 }

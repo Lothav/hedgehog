@@ -1,18 +1,11 @@
 #include <functional>
 #include <memory>
-
-#include "renderer/Window.hpp"
-#include "renderer/Shader.hpp"
-
+#include <SDL2/SDL_image.h>
 #include <ft2build.h>
 #include FT_FREETYPE_H
-#include "renderer/Text.hpp"
+
+#include "renderer/Window.hpp"
 #include "renderer/BulkText.hpp"
-
-#include <SDL2/SDL_image.h>
-
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 600
 
 int main(int argc, char* argv[])
 {
@@ -29,7 +22,11 @@ int main(int argc, char* argv[])
     }
 
     {
-        auto window = std::make_unique<Renderer::Window>(SCREEN_WIDTH, SCREEN_HEIGHT);
+        SDL_DisplayMode DM;
+        SDL_GetCurrentDisplayMode(0, &DM);
+        std::array<int, 2> window_default_size = {DM.w, DM.h};
+
+        auto window = std::make_unique<Renderer::Window>(window_default_size);
 
         auto mainContext = SDL_GL_CreateContext(window->getWindow());
 
@@ -46,12 +43,9 @@ int main(int argc, char* argv[])
 
         auto *SDL_window = window->getWindow();
 
-        float sx = 2.0f / SCREEN_WIDTH;
-        float sy = 2.0f / SCREEN_HEIGHT;
-
         GLfloat white_color[4] {1.f, 1.f, 1.f, 1.f};
 
-        auto text_velocity = std::make_shared<Renderer::Text>(-1 + 8 * sx, 1 - 50 * sy-1.8f, sx, sy, 48, white_color);
+        auto text_velocity = std::make_shared<Renderer::Text>(-1.f, -1.f, 48, white_color);
         text_velocity->setText("Test");
         Renderer::BulkText::getInstance().push_back(text_velocity);
 
@@ -66,7 +60,7 @@ int main(int argc, char* argv[])
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
-            Renderer::BulkText::getInstance().draw();
+            Renderer::BulkText::getInstance().draw(window->getSize());
 
             // Swap Window
             SDL_GL_SwapWindow(SDL_window);

@@ -16,21 +16,14 @@ namespace Renderer {
 
     public:
 
-        static BulkText& getInstance()
-        {
-            static BulkText instance;
-            return instance;
-        }
+        static BulkText& getInstance();
 
         BulkText(BulkText const&) = delete;
         void operator=(BulkText const&)  = delete;
 
     private:
 
-        std::vector<
-            std::weak_ptr<Text>,
-            Memory::Allocator<std::weak_ptr<Text>>
-        > texts_;
+        std::vector<std::weak_ptr<Text>, Memory::Allocator<std::weak_ptr<Text>> > texts_;
 
         Renderer::Shader* shader_;
         GLuint shader_tex_pos_;
@@ -45,7 +38,7 @@ namespace Renderer {
 
         void push_back(const std::weak_ptr<Text>& text);
 
-        void draw();
+        void draw(std::array<int, 2> window_size);
 
     };
 }

@@ -4,6 +4,12 @@
 
 #include "BulkText.hpp"
 
+Renderer::BulkText &Renderer::BulkText::getInstance()
+{
+    static Renderer::BulkText instance;
+    return instance;
+}
+
 Renderer::BulkText::BulkText() : texts_({}), freetype_face_(nullptr)
 {
     FT_Library ft;
@@ -44,7 +50,7 @@ void Renderer::BulkText::push_back(const std::weak_ptr<Text>& text)
     texts_.push_back(text);
 }
 
-void Renderer::BulkText::draw()
+void Renderer::BulkText::draw(std::array<int, 2> window_size)
 {
     // Init Text Shader
     this->shader_->use();
@@ -91,6 +97,9 @@ void Renderer::BulkText::draw()
         auto x_tmp = text->getX();
         auto y_tmp = text->getY();
 
+        float sx = 2.0f / window_size[0];
+        float sy = 2.0f / window_size[1];
+
         /* Loop through all characters */
         for (char i : text->getText()) {
             /* Try to load and render the character */
@@ -100,10 +109,10 @@ void Renderer::BulkText::draw()
             glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, g->bitmap.width, g->bitmap.rows, 0, GL_ALPHA, GL_UNSIGNED_BYTE, g->bitmap.buffer);
 
             /* Calculate the vertex and texture coordinates */
-            float x2 = x_tmp + g->bitmap_left * text->getSX();
-            float y2 = -y_tmp - g->bitmap_top * text->getSY();
-            float w  = g->bitmap.width * text->getSX();
-            float h  = g->bitmap.rows * text->getSY();
+            float x2 = x_tmp + g->bitmap_left * sx;
+            float y2 = -y_tmp - g->bitmap_top * sy;
+            float w  = g->bitmap.width * sx;
+            float h  = g->bitmap.rows * sy;
 
             std::array<GLfloat[4], 4> box {{
                  {    x2,     -y2, 0, 0},
@@ -119,8 +128,8 @@ void Renderer::BulkText::draw()
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
             /* Advance the cursor to the start of the next character */
-            x_tmp += (g->advance.x >> 6) * text->getSX();
-            y_tmp += (g->advance.y >> 6) * text->getSY();
+            x_tmp += (g->advance.x >> 6) * sx;
+            y_tmp += (g->advance.y >> 6) * sy;
         }
     }
 

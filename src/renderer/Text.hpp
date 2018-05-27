@@ -9,14 +9,6 @@
 #include <GL/glew.h>
 #include <memory>
 #include FT_FREETYPE_H
-#include "Shader.hpp"
-
-struct point {
-    GLfloat x;
-    GLfloat y;
-    GLfloat s;
-    GLfloat t;
-};
 
 namespace Renderer {
 
@@ -27,24 +19,30 @@ namespace Renderer {
         float y_;
         float sx_;
         float sy_;
-        FT_Face font_face_;
+        FT_UInt size_;
+        GLfloat color_[4];
+        std::string text_;
 
-        GLuint vbo;
-
-        GLuint uniform_tex_;
-        GLuint attribute_coord_;
-        GLuint uniform_color_;
-
-        Renderer::Shader* shader;
+        GLuint vbo_;
 
     public:
 
-        Text(float x, float y, float sx, float sy, FT_Face font_face);
+        Text(float x, float y, float sx, float sy, FT_UInt size, GLfloat color[4]);
 
-        void prepare(FT_UInt font_size = 48);
+        std::string getText();
+        void setText(std::string text);
 
-        void draw(std::string text);
+        float getX();
+        float getY();
 
+        float getSX();
+        float getSY();
+
+        float getSize();
+
+        GLfloat* getColor ();
+
+        GLuint getVBO ();
     };
 }
 

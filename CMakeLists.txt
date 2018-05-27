@@ -12,24 +12,15 @@ add_executable(
         src/memory/Pool.cpp
         src/memory/Pool.hpp
 
-        src/renderer/Meshes.hpp
         src/renderer/Shader.cpp
         src/renderer/Shader.hpp
-        src/renderer/Uniform.hpp
-        src/renderer/Vertex.hpp
         src/renderer/Window.hpp
-        src/renderer/Meshes.cpp
-        src/renderer/Uniform.cpp
-        src/renderer/Vertex.cpp
         src/renderer/Window.cpp
-
-        src/entity/Player.hpp
-        src/entity/Player.cpp
-        src/entity/Block.cpp
-        src/entity/Block.hpp
-        src/entity/Ball.cpp
-        src/entity/Ball.hpp
-        src/renderer/Text.cpp src/renderer/Text.hpp)
+        src/renderer/Text.cpp
+        src/renderer/Text.hpp
+        src/renderer/BulkText.cpp
+        src/renderer/BulkText.hpp
+)
 
 include_directories(/usr/include/freetype2)
 

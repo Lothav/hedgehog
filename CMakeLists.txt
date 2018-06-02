@@ -20,6 +20,8 @@ add_executable(
         src/renderer/Text.hpp
         src/renderer/BulkText.cpp
         src/renderer/BulkText.hpp
+        src/renderer/Object2D.cpp
+        src/renderer/Object2D.hpp
 )
 
 include_directories(/usr/include/freetype2)

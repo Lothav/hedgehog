@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
         GLenum err = glewInit();
         if (err != GLEW_OK) {
             std::cerr << "Glew is not ok =(" << std::endl;
-            exit(1);
+            return EXIT_FAILURE;
         }
 
         if (!GLEW_VERSION_2_0) {
@@ -77,11 +77,8 @@ int main(int argc, char* argv[])
 #endif
         };
 
-#ifdef __EMSCRIPTEN__
-        emscripten_set_main_loop(loop, 0, true);
-#else
         while(loop());
-#endif
+
         SDL_GL_DeleteContext(mainContext);
     }
 

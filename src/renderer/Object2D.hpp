@@ -7,6 +7,9 @@
 
 #include <GL/glew.h>
 #include <array>
+#include <SDL2/SDL_image.h>
+#include "../memory/Pool.hpp"
+#include "../memory/Provider.hpp"
 
 #define COORDINATES_BY_VERTEX 5   // 5 coords each (x, y, z, u, v)
 #define TOTAL_VERTICES 6          // 6 points (two triangles
@@ -29,6 +32,7 @@ namespace Renderer
 {
     class Object2D
     {
+
     private:
 
         Position pos_;
@@ -37,11 +41,14 @@ namespace Renderer
         // Six vetices = 2 triangles.
         std::array<GLfloat, SIZE_VERTICES> vertices_;
 
+        GLuint texture_id_;
+
+
+
     public:
 
         Object2D(Position position, Size size) : pos_(position), size_(size)
         {
-
             auto x = position.x;
             auto y = position.y;
 
@@ -59,6 +66,37 @@ namespace Renderer
                 x + (width/2), y - (height/2), 0.0f, 1.0f, 1.0f, // f    e/__|f
             };
         }
+
+        void setTexture(const std::string& path, const GLenum format)
+        {
+            SDL_Surface* surf = IMG_Load(path.c_str());
+
+            glGenTextures(1, &this->texture_id_);
+            glBindTexture(GL_TEXTURE_2D, this->texture_id_);
+            glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, surf->w, surf->h);
+            glTexSubImage2D(GL_TEXTURE_2D, 0, 0 ,0, surf->w, surf->h, format, GL_UNSIGNED_BYTE, surf->pixels);
+
+            free(surf);
+
+            unsigned int error_code = glGetError();
+            if (error_code != GL_NO_ERROR) {
+                std::cerr << "OpenGL error glTexImage2D. Error code: " << std::to_string(error_code) << std::endl;
+            }
+
+            glGenerateMipmap(GL_TEXTURE_2D);
+
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        }
+
+        void * operator new (std::size_t size)
+        {
+            return Memory::Provider::getMemory(Memory::PoolType::POOL_TYPE_GENERIC, size);
+        }
+
+        void  operator delete (void* ptr, std::size_t) {}
 
     };
 }

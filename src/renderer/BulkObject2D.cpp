@@ -35,7 +35,7 @@ Renderer::BulkObject2D::BulkObject2D() : objects2d_({}), shader_(nullptr), view_
     this->shader_uv_pos_ = static_cast<GLuint>(loc);
 }
 
-void Renderer::BulkObject2D::push_back(const std::weak_ptr<Object2D>& object2d)
+void Renderer::BulkObject2D::push_back(Object2D* object2d)
 {
     this->objects2d_.push_back(object2d);
 }
@@ -55,7 +55,7 @@ void Renderer::BulkObject2D::draw()
 
     for (const auto &object2d : objects2d_) {
 
-        auto object2d_ptr = object2d.lock();
+        auto object2d_ptr = object2d;
         if (!object2d_ptr) {
             std::cerr << "Object2D pointer not valid!" << std::endl;
             continue;

@@ -23,7 +23,7 @@ namespace Renderer
 
     private:
 
-        std::vector<std::weak_ptr<Object2D>, Memory::Allocator<std::weak_ptr<Object2D>> > objects2d_;
+        std::vector<Object2D *, Memory::Allocator<Object2D *> > objects2d_;
 
         Renderer::Shader* shader_;
         GLuint shader_tex_pos_;
@@ -37,7 +37,7 @@ namespace Renderer
 
     public:
 
-        void push_back(const std::weak_ptr<Object2D>& object2d);
+        void push_back(Object2D * object2d);
 
         void draw();
     };

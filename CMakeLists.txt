@@ -46,7 +46,7 @@ add_executable(
         src/renderer/Object2D.hpp
         src/renderer/BulkObject2D.cpp
         src/renderer/BulkObject2D.hpp
-)
+        src/renderer/Map.cpp src/renderer/Map.hpp)
 
 include_directories(/usr/include/freetype2)
 include_directories(vendor/include/tmxparser/src)

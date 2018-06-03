@@ -9,6 +9,23 @@
 #include "renderer/Object2D.hpp"
 #include "renderer/BulkObject2D.hpp"
 
+void create()
+{
+    GLfloat white_color[4] {1.f, 1.f, 1.f, 1.f};
+    auto text_velocity = std::make_shared<Renderer::Text>(-1.f, -1.f, 48, white_color);
+    text_velocity->setText("Test");
+    Renderer::BulkText::getInstance().push_back(text_velocity);
+
+    auto player = std::make_shared<Renderer::Object2D>(Position{.x = 0, .y = 0, .z = 0}, Size{.height = 0.06f, .width = 0.24f});
+    player->setTexture("./data/breakout-blocks-texture.jpg", GL_RGB);
+    Renderer::BulkObject2D::getInstance().push_back(player);
+}
+
+void update()
+{
+
+}
+
 int main(int argc, char* argv[])
 {
     Memory::Provider::initPools();
@@ -43,17 +60,7 @@ int main(int argc, char* argv[])
             return EXIT_FAILURE;
         }
 
-        auto *SDL_window = window->getWindow();
-
-        GLfloat white_color[4] {1.f, 1.f, 1.f, 1.f};
-
-        auto text_velocity = std::make_shared<Renderer::Text>(-1.f, -1.f, 48, white_color);
-        text_velocity->setText("Test");
-        Renderer::BulkText::getInstance().push_back(text_velocity);
-
-        auto player = std::make_shared<Renderer::Object2D>(Position{.x = 0, .y = 0, .z = 0}, Size{.height = 0.06f, .width = 0.24f});
-        player->setTexture("./data/breakout-blocks-texture.jpg", GL_RGB);
-        Renderer::BulkObject2D::getInstance().push_back(player);
+        create();
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -69,8 +76,10 @@ int main(int argc, char* argv[])
             Renderer::BulkObject2D::getInstance().draw();
             Renderer::BulkText::getInstance().draw(window->getSize());
 
+            update();
+
             // Swap Window
-            SDL_GL_SwapWindow(SDL_window);
+            SDL_GL_SwapWindow(window->getWindow());
 
             // Adjust FPS
             if (1000/60 > (SDL_GetTicks() - start)) {

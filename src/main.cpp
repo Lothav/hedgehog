@@ -51,9 +51,8 @@ int main(int argc, char* argv[])
             return EXIT_FAILURE;
         }
 
-        auto map = new Renderer::Map();
-        map->loadLayersFromTmxFile( "data/maps/0002.tmx", .0005f);
-
+        auto map = std::make_unique<Renderer::Map>();
+        map->loadLayersFromTmxFile("data/maps/0002.tmx", .0005f);
         for(auto &layer: map->getLayers()) {
             for (auto &layer_data: layer->data) {
                 Renderer::BulkObject2D::getInstance().push_back(layer_data);

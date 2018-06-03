@@ -14,7 +14,7 @@ Renderer::Text::Text(float x, float y, FT_UInt size, GLfloat color[4]) : size_(s
     this->color_[2] = color[2];
     this->color_[3] = color[3];
 
-    glGenBuffers(1, &vbo_);
+    glGenBuffers(1, &this->vbo_);
 }
 
 void * Renderer::Text::operator new (std::size_t size)

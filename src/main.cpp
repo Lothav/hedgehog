@@ -6,6 +6,8 @@
 
 #include "renderer/Window.hpp"
 #include "renderer/BulkText.hpp"
+#include "renderer/Object2D.hpp"
+#include "renderer/BulkObject2D.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -49,6 +51,10 @@ int main(int argc, char* argv[])
         text_velocity->setText("Test");
         Renderer::BulkText::getInstance().push_back(text_velocity);
 
+        auto player = std::make_shared<Renderer::Object2D>(Position{.x = 0, .y = 0, .z = 0}, Size{.height = 0.06f, .width = 0.24f});
+        player->setTexture("./data/breakout-blocks-texture.jpg", GL_RGB);
+        Renderer::BulkObject2D::getInstance().push_back(player);
+
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -60,6 +66,7 @@ int main(int argc, char* argv[])
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
+            Renderer::BulkObject2D::getInstance().draw();
             Renderer::BulkText::getInstance().draw(window->getSize());
 
             // Swap Window
@@ -70,11 +77,7 @@ int main(int argc, char* argv[])
                 SDL_Delay(1000/60 - (SDL_GetTicks() - start));
             }
 
-#ifdef DEBUG
-            return false;
-#else
             return true;
-#endif
         };
 
         while(loop());
@@ -85,5 +88,6 @@ int main(int argc, char* argv[])
     Memory::Provider::destroyPools();
     SDL_Quit();
     glEnd();
+
     return EXIT_SUCCESS;
 }

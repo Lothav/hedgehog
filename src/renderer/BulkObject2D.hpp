@@ -8,6 +8,7 @@
 #include <memory>
 #include "Object2D.hpp"
 #include "Shader.hpp"
+#include <glm/mat4x4.hpp> // glm::vec4
 
 namespace Renderer
 {
@@ -26,10 +27,11 @@ namespace Renderer
 
         Renderer::Shader* shader_;
         GLuint shader_tex_pos_;
+        GLuint shader_uv_pos_;
         GLuint shader_view_pos_;
+        GLuint shader_vert_pos_;
 
-        GLuint VBO;
-        GLuint VAO;
+        glm::mat4 view_camera_;
 
         BulkObject2D();
 
@@ -37,7 +39,7 @@ namespace Renderer
 
         void push_back(const std::weak_ptr<Object2D>& object2d);
 
-        void draw(std::array<int, 2> window_size);
+        void draw();
     };
 }
 

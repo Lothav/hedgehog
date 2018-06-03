@@ -42,6 +42,7 @@ namespace Renderer
         std::array<GLfloat, SIZE_VERTICES> vertices_;
 
         GLuint texture_id_;
+        GLuint vbo_;
 
     public:
 
@@ -54,15 +55,17 @@ namespace Renderer
             auto height = size.height;
 
             this->vertices_ = {
-                // Triangles                                            c ___
-                x + (width/2), y + (height/2), 0.0f, 1.0f, 0.0f, // a    |  /a
-                x - (width/2), y - (height/2), 0.0f, 0.0f, 1.0f, // b    | /
-                x - (width/2), y + (height/2), 0.0f, 0.0f, 0.0f, // c   b|/
+                // Triangles                                                c ___
+                x + (width/2.f), y + (height/2.f), 0.0f, 1.0f, 0.0f, // a    |  /a
+                x - (width/2.f), y - (height/2.f), 0.0f, 0.0f, 1.0f, // b    | /
+                x - (width/2.f), y + (height/2.f), 0.0f, 0.0f, 0.0f, // c   b|/
 
-                x + (width/2), y + (height/2), 0.0f, 1.0f, 0.0f, // d       /|d
-                x - (width/2), y - (height/2), 0.0f, 0.0f, 1.0f, // e      / |
-                x + (width/2), y - (height/2), 0.0f, 1.0f, 1.0f, // f    e/__|f
+                x + (width/2.f), y + (height/2.f), 0.0f, 1.0f, 0.0f, // d       /|d
+                x - (width/2.f), y - (height/2.f), 0.0f, 0.0f, 1.0f, // e      / |
+                x + (width/2.f), y - (height/2.f), 0.0f, 1.0f, 1.0f, // f    e/__|f
             };
+
+            glGenBuffers(1, &this->vbo_);
         }
 
         void setTexture(const std::string& path, const GLenum format)
@@ -87,6 +90,11 @@ namespace Renderer
         GLuint getTextureId()
         {
             return this->texture_id_;
+        }
+
+        GLuint getVBO()
+        {
+            return this->vbo_;
         }
 
         std::array<GLfloat, SIZE_VERTICES> getVertices()

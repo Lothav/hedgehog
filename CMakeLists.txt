@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.4)
 project(hedgehog)
 
 set(TINYXML2_INCLUDE_DIR vendor/lib/tinyxml2)
-add_subdirectory(vendor/include/tmxparser ../vendor/include/tmxparser)
+add_subdirectory(vendor/include/tmxparser ../vendor/include/tmxparser/src)
 
 find_path(TMXPARSER_INCLUDE_DIR NAMES ../vendor/include/tmxparser/src/Tmx.h
         DOC "The tmxparser include directory"

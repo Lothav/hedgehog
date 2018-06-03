@@ -1,0 +1,6 @@
+[submodule "vendor/include/tmxparser"]
+	path = vendor/include/tmxparser
+	url = https://github.com/sainteos/tmxparser
+[submodule "vendor/lib/tinyxml2"]
+	path = vendor/lib/tinyxml2
+	url = https://github.com/leethomason/tinyxml2

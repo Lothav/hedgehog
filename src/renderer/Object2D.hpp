@@ -43,8 +43,6 @@ namespace Renderer
 
         GLuint texture_id_;
 
-
-
     public:
 
         Object2D(Position position, Size size) : pos_(position), size_(size)
@@ -84,12 +82,17 @@ namespace Renderer
             }
 
             glGenerateMipmap(GL_TEXTURE_2D);
-
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         }
+
+        GLuint getTextureId()
+        {
+            return this->texture_id_;
+        }
+
+        std::array<GLfloat, SIZE_VERTICES> getVertices()
+        {
+            return this->vertices_;
+        };
 
         void * operator new (std::size_t size)
         {

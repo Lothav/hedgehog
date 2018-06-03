@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.4)
-project(breakout)
+project(hedgehog)
 
 add_executable(
         launcher
@@ -22,7 +22,7 @@ add_executable(
         src/renderer/BulkText.hpp
         src/renderer/Object2D.cpp
         src/renderer/Object2D.hpp
-)
+        src/renderer/BulkObject2D.cpp src/renderer/BulkObject2D.hpp)
 
 include_directories(/usr/include/freetype2)
 

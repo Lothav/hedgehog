@@ -38,14 +38,15 @@ namespace Renderer
         Position pos_;
         Size size_;
 
-        // Six vetices = 2 triangles.
-        std::array<GLfloat, SIZE_VERTICES> vertices_;
-
         GLuint vbo_;
 
     protected:
 
+        // Current texture id
         GLuint texture_id_;
+
+        // Six vetices = 2 triangles.
+        std::array<GLfloat, SIZE_VERTICES> vertices_;
 
     public:
 

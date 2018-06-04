@@ -78,6 +78,17 @@ namespace Renderer
             this->texture_id_ = animations_vec[this->animation_frame_].id;
         }
 
+        void move(GLfloat x, GLfloat y)
+        {
+            for (int i = 0; i < SIZE_VERTICES; i += COORDINATES_BY_VERTEX) {
+                this->vertices_[i] += x;
+            }
+
+            for (int i = 1; i < SIZE_VERTICES; i += COORDINATES_BY_VERTEX) {
+                this->vertices_[i] += y;
+            }
+        }
+
     };
 }
 

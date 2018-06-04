@@ -6,6 +6,7 @@
 #define HEDGEHOG_INPUT_HPP
 
 #include <SDL2/SDL_events.h>
+#include "../renderer/Player.hpp"
 
 namespace Events
 {
@@ -24,7 +25,7 @@ namespace Events
 
     public:
 
-        bool HandleEvent() const
+        bool HandleEvent(Renderer::Player* player) const
         {
             SDL_Event e;
             while (SDL_PollEvent(&e)) {
@@ -37,9 +38,31 @@ namespace Events
 
                 // Restart if hit 'r'
                 if (e.type == SDL_KEYDOWN) {
-                    if (e.key.keysym.sym == SDLK_r) {
 
+                    switch (e.key.keysym.sym) {
+
+                        case SDLK_w:
+                            player->move(.0f, .01f);
+                            break;
+
+                        case SDLK_a:
+                            player->move(-.01f, .0f);
+                            break;
+
+                        case SDLK_s:
+                            player->move(.0f, -.01f);
+                            break;
+
+                        case SDLK_d:
+                            player->move(.01f, .00f);
+                            break;
+
+                        case SDLK_r:
+
+                        default:
+                            break;
                     }
+
                 }
 
                 // Restart if hit left mouse button

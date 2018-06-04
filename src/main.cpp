@@ -94,7 +94,7 @@ int main(int argc, char* argv[])
             Renderer::BulkObject2D::getInstance().draw();
             Renderer::BulkText::getInstance().draw(window->getSize());
 
-            auto quit = Events::Input::getInstance().HandleEvent();
+            auto quit = Events::Input::getInstance().HandleEvent(player);
             if (quit) return false;
 
             update();

@@ -10,6 +10,11 @@ Renderer::BulkObject2D &Renderer::BulkObject2D::getInstance()
     return instance;
 }
 
+void * Renderer::BulkObject2D::operator new (std::size_t size)
+{
+    return Memory::Provider::getMemory(Memory::PoolType::POOL_TYPE_GENERIC, size);
+}
+
 Renderer::BulkObject2D::BulkObject2D() : objects2d_({}), shader_(nullptr), view_camera_(glm::mat4())
 {
     // Compile/Link/Set Shader Program

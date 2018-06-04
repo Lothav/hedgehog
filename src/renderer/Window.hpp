@@ -18,7 +18,7 @@ namespace Renderer {
 
     public:
 
-        Window(std::array<int, 2> size) : size_(size), window(nullptr), renderer(nullptr)
+        Window(std::string name, std::array<int, 2> size) : size_(size), window(nullptr), renderer(nullptr)
         {
             if (SDL_Init(SDL_INIT_VIDEO) < 0) {
                 std::cout << "Could not initialize sdl2: " << SDL_GetError();
@@ -26,7 +26,7 @@ namespace Renderer {
             }
 
             this->window = SDL_CreateWindow(
-                "",
+                name.c_str(),
                 SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                 size[0], size[1],
                 SDL_WINDOW_FULLSCREEN | SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_OPENGL

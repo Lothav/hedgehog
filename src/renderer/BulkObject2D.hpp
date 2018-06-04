@@ -37,6 +37,10 @@ namespace Renderer
 
     public:
 
+        void * operator new (std::size_t size);
+
+        void  operator delete (void* ptr, std::size_t) {}
+
         void push_back(Object2D * object2d);
 
         void draw();

@@ -10,6 +10,11 @@ Renderer::BulkText &Renderer::BulkText::getInstance()
     return instance;
 }
 
+void * Renderer::BulkText::operator new (std::size_t size)
+{
+    return Memory::Provider::getMemory(Memory::PoolType::POOL_TYPE_GENERIC, size);
+}
+
 Renderer::BulkText::BulkText() : texts_({}), freetype_face_(nullptr)
 {
     FT_Library ft;
@@ -45,7 +50,7 @@ Renderer::BulkText::BulkText() : texts_({}), freetype_face_(nullptr)
     this->shader_color_pos_ = static_cast<GLuint>(loc);
 }
 
-void Renderer::BulkText::push_back(const std::weak_ptr<Text>& text)
+void Renderer::BulkText::push_back(Text* text)
 {
     texts_.push_back(text);
 }
@@ -79,9 +84,8 @@ void Renderer::BulkText::draw(std::array<int, 2> window_size)
     /* Set up the VBO for our vertex data */
     glEnableVertexAttribArray(this->shader_coord_pos_);
 
-    for (const auto &weakText : texts_) {
+    for (const auto &text : texts_) {
 
-        auto text = weakText.lock();
         if (!text) {
             std::cerr << "Text pointer not valid!" << std::endl;
             continue;

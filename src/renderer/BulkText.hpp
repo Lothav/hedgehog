@@ -23,7 +23,7 @@ namespace Renderer {
 
     private:
 
-        std::vector<std::weak_ptr<Text>, Memory::Allocator<std::weak_ptr<Text>> > texts_;
+        std::vector<Text *, Memory::Allocator<Text *> > texts_;
 
         Renderer::Shader* shader_;
         GLuint shader_tex_pos_;
@@ -36,7 +36,11 @@ namespace Renderer {
 
     public:
 
-        void push_back(const std::weak_ptr<Text>& text);
+        void * operator new (std::size_t size);
+
+        void  operator delete (void* ptr, std::size_t) {}
+
+        void push_back(Text* text);
 
         void draw(std::array<int, 2> window_size);
 

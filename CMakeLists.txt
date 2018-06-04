@@ -53,6 +53,6 @@ add_executable(
         src/renderer/Object2D.hpp
         src/renderer/BulkObject2D.cpp
         src/renderer/BulkObject2D.hpp
-        src/renderer/Map.cpp src/renderer/Map.hpp)
+        src/renderer/Map.cpp src/renderer/Map.hpp src/events/Input.cpp src/events/Input.hpp)
 
 target_link_libraries(launcher SDL2 SDL2_image GL GLEW freetype tmxparser)

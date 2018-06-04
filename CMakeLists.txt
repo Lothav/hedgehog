@@ -2,6 +2,13 @@ cmake_minimum_required(VERSION 2.8.4)
 project(hedgehog)
 
 set(TINYXML2_INCLUDE_DIR vendor/lib/tinyxml2)
+set(TINYXML2_LIBRARIES tinyxml2)
+
+include_directories(/usr/include/freetype2)
+include_directories(vendor/include/tmxparser/src)
+include_directories(vendor/lib/tinyxml2)
+
+add_subdirectory(vendor/lib/tinyxml2 ../vendor/lib/tinyxml2)
 add_subdirectory(vendor/include/tmxparser ../vendor/include/tmxparser/src)
 
 find_path(TMXPARSER_INCLUDE_DIR NAMES ../vendor/include/tmxparser/src/Tmx.h
@@ -47,8 +54,5 @@ add_executable(
         src/renderer/BulkObject2D.cpp
         src/renderer/BulkObject2D.hpp
         src/renderer/Map.cpp src/renderer/Map.hpp)
-
-include_directories(/usr/include/freetype2)
-include_directories(vendor/include/tmxparser/src)
 
 target_link_libraries(launcher SDL2 SDL2_image GL GLEW freetype tmxparser)

@@ -40,6 +40,8 @@ namespace Renderer
 
         GLuint vbo_;
 
+        bool fixed_;
+
     protected:
 
         // Current texture id
@@ -52,13 +54,18 @@ namespace Renderer
 
         void setTexture(const std::string& path, const GLenum format);
 
-        Object2D(Position position, Size size);
+        Object2D(Position position, Size size, bool fixed);
 
         GLuint getTextureId();
 
         GLuint getVBO();
 
         std::array<GLfloat, SIZE_VERTICES> getVertices();
+
+        bool getFixed() const
+        {
+            return this->fixed_;
+        }
 
         void * operator new (std::size_t size);
 

@@ -4,7 +4,7 @@
 
 #include "Object2D.hpp"
 
-Renderer::Object2D::Object2D(Position position, Size size) : pos_(position), size_(size), vbo_(0), vertices_({}), texture_id_(0)
+Renderer::Object2D::Object2D(Position position, Size size, bool fixed) : fixed_(fixed), pos_(position), size_(size), vbo_(0), vertices_({}), texture_id_(0)
 {
     auto x = position.x;
     auto y = position.y;

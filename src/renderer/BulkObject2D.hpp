@@ -8,6 +8,7 @@
 #include <memory>
 #include "Object2D.hpp"
 #include "Shader.hpp"
+#include "Camera.hpp"
 #include <glm/mat4x4.hpp> // glm::vec4
 
 namespace Renderer
@@ -28,10 +29,7 @@ namespace Renderer
         Renderer::Shader* shader_;
         GLuint shader_tex_pos_;
         GLuint shader_uv_pos_;
-        GLuint shader_view_pos_;
         GLuint shader_vert_pos_;
-
-        glm::mat4 view_camera_;
 
         BulkObject2D();
 
@@ -41,9 +39,14 @@ namespace Renderer
 
         void  operator delete (void* ptr, std::size_t) {}
 
-        void push_back(Object2D * object2d);
+        void push_back(Object2D* object2d);
 
-        void draw();
+        void draw(Renderer::Camera* camera);
+
+        GLuint GetShaderProgram()
+        {
+            return this->shader_->getShaderProgram();
+        }
     };
 }
 

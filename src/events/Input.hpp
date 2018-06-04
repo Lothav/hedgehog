@@ -7,6 +7,7 @@
 
 #include <SDL2/SDL_events.h>
 #include "../renderer/Player.hpp"
+#include "../renderer/Camera.hpp"
 
 namespace Events
 {
@@ -25,7 +26,7 @@ namespace Events
 
     public:
 
-        bool HandleEvent(Renderer::Player* player) const
+        bool HandleEvent(Renderer::Player* player, Renderer::Camera* camera) const
         {
             SDL_Event e;
             while (SDL_PollEvent(&e)) {
@@ -42,19 +43,23 @@ namespace Events
                     switch (e.key.keysym.sym) {
 
                         case SDLK_w:
-                            player->move(.0f, .01f);
+                            //player->move(.0f, .01f);
+                            camera->move({.0f, -.01f, .0f});
                             break;
 
                         case SDLK_a:
-                            player->move(-.01f, .0f);
+                            //player->move(-.01f, .0f);
+                            camera->move({.01f, .0f, .0f});
                             break;
 
                         case SDLK_s:
-                            player->move(.0f, -.01f);
+                            //player->move(.0f, -.01f);
+                            camera->move({.0f, .01f, .0f});
                             break;
 
                         case SDLK_d:
-                            player->move(.01f, .00f);
+                            //player->move(.01f, .0f);
+                            camera->move({-.01f, .0f, .0f});
                             break;
 
                         case SDLK_r:

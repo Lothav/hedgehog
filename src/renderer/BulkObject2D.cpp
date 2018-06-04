@@ -15,7 +15,7 @@ void * Renderer::BulkObject2D::operator new (std::size_t size)
     return Memory::Provider::getMemory(Memory::PoolType::POOL_TYPE_GENERIC, size);
 }
 
-Renderer::BulkObject2D::BulkObject2D() : objects2d_({}), shader_(nullptr), view_camera_(glm::mat4())
+Renderer::BulkObject2D::BulkObject2D() : objects2d_({}), shader_(nullptr)
 {
     // Compile/Link/Set Shader Program
     this->shader_ = new Renderer::Shader();
@@ -26,10 +26,6 @@ Renderer::BulkObject2D::BulkObject2D() : objects2d_({}), shader_(nullptr), view_
     auto loc = glGetUniformLocation(this->shader_->getShaderProgram(), "tex");
     if (loc < 0) std::cerr << "Can't find 'tex' uniform on shader!" << std::endl;
     this->shader_tex_pos_ = static_cast<GLuint>(loc);
-
-    loc = glGetUniformLocation(this->shader_->getShaderProgram(), "view");
-    if (loc < 0) std::cerr << "Can't find 'view' uniform on shader!" << std::endl;
-    this->shader_view_pos_ = static_cast<GLuint>(loc);
 
     loc = glGetAttribLocation(this->shader_->getShaderProgram(), "vert");
     if (loc < 0) std::cerr << "Error find location Attribute shader!" << std::endl;
@@ -45,7 +41,7 @@ void Renderer::BulkObject2D::push_back(Object2D* object2d)
     this->objects2d_.push_back(object2d);
 }
 
-void Renderer::BulkObject2D::draw()
+void Renderer::BulkObject2D::draw(Renderer::Camera *camera)
 {
     this->shader_->use();
 
@@ -60,13 +56,15 @@ void Renderer::BulkObject2D::draw()
 
     for (const auto &object2d : objects2d_) {
 
+        camera->update(object2d->getFixed());
+
         auto object2d_ptr = object2d;
         if (!object2d_ptr) {
             std::cerr << "Object2D pointer not valid!" << std::endl;
             continue;
         }
 
-        GLsizei stride = COORDINATES_BY_VERTEX*sizeof(GLfloat);
+        GLsizei stride = COORDINATES_BY_VERTEX * sizeof(GLfloat);
         glBindBuffer(GL_ARRAY_BUFFER, object2d_ptr->getVBO());
         glVertexAttribPointer(this->shader_vert_pos_, 3, GL_FLOAT, GL_TRUE, stride, nullptr);
         glVertexAttribPointer(this->shader_uv_pos_, 2, GL_FLOAT, GL_TRUE, stride, (const GLvoid*)(3 * sizeof(GLfloat)));
@@ -75,8 +73,6 @@ void Renderer::BulkObject2D::draw()
         glActiveTexture(GL_TEXTURE0 + texture_id);
         glBindTexture(GL_TEXTURE_2D, texture_id);
         glUniform1i(this->shader_tex_pos_, texture_id);
-
-        glUniformMatrix4fv(this->shader_view_pos_, 1, GL_FALSE, &this->view_camera_[0][0]);
 
         auto vertices = object2d_ptr->getVertices();
         glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), vertices.data(), GL_STATIC_DRAW);

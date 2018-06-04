@@ -48,7 +48,7 @@ namespace Renderer
 
     public:
 
-        Player(const std::vector<Animation>& animations) : Object2D(Position{.x = .0f, .y = .0f}, Size{.height = .16f, .width = .16f})
+        Player(const std::vector<Animation>& animations) : Object2D(Position{.x = .0f, .y = .0f}, Size{.height = .16f, .width = .16f}, true)
         {
             this->orientation_ = animations[0].orientation;
             this->animation_state_ = animations[0].state;

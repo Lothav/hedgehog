@@ -53,7 +53,8 @@ void Renderer::Map::loadLayersFromTmxFile(const std::string& path, const GLfloat
                         Size {
                                 .height = h,
                                 .width  = w,
-                        }
+                        },
+                        false
                 );
 
                 tile_obj2d->setTexture("./data/maps/" + img->GetSource(), GL_RGBA);

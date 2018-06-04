@@ -59,6 +59,6 @@ add_executable(
         src/events/Input.hpp
         src/renderer/Player.cpp
         src/renderer/Player.hpp
-)
+        src/renderer/Camera.cpp src/renderer/Camera.hpp)
 
 target_link_libraries(launcher SDL2 SDL2_image GL GLEW freetype tmxparser)

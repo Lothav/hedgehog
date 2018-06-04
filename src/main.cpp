@@ -81,6 +81,8 @@ int main(int argc, char* argv[])
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+        auto camera = new Renderer::Camera(Renderer::BulkObject2D::getInstance().GetShaderProgram());
+
         auto loop = [&]() -> bool {
 
             auto start = SDL_GetTicks();
@@ -91,10 +93,10 @@ int main(int argc, char* argv[])
 
             player->updateAnimationFrame();
 
-            Renderer::BulkObject2D::getInstance().draw();
+            Renderer::BulkObject2D::getInstance().draw(camera);
             Renderer::BulkText::getInstance().draw(window->getSize());
 
-            auto quit = Events::Input::getInstance().HandleEvent(player);
+            auto quit = Events::Input::getInstance().HandleEvent(player, camera);
             if (quit) return false;
 
             update();

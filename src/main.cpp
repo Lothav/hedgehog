@@ -12,6 +12,7 @@
 #include "Tmx.h"
 #include "renderer/Map.hpp"
 #include "events/Input.hpp"
+#include "renderer/Player.hpp"
 
 void update()
 {
@@ -60,17 +61,22 @@ int main(int argc, char* argv[])
             }
         }
 
+        Renderer::Animation animation;
+        animation.orientation = Renderer::Orientation::DOWN;
+        animation.size = 31;
+        animation.base_path = "./data/characters/cowboy/stand/v2/down/0";
+        animation.state = "stand";
+
+        std::vector<Renderer::Animation> animations = {};
+        animations.push_back(animation);
+
+        auto player = new Renderer::Player(animations);
+        Renderer::BulkObject2D::getInstance().push_back(player);
+
         GLfloat white_color[4] {1.f, 1.f, 1.f, 1.f};
         auto text_velocity = new Renderer::Text(-1.f, -1.f, 48, white_color);
         text_velocity->setText("Test");
         Renderer::BulkText::getInstance().push_back(text_velocity);
-
-        auto player = std::make_shared<Renderer::Object2D> (
-            Position{.x = 0, .y = 0, .z = 0},
-            Size{.height = 0.06f, .width = 0.24f}
-        );
-        player->setTexture("./data/breakout-blocks-texture.jpg", GL_RGB);
-        Renderer::BulkObject2D::getInstance().push_back(player.get());
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -83,11 +89,12 @@ int main(int argc, char* argv[])
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
+            player->updateAnimationFrame();
+
             Renderer::BulkObject2D::getInstance().draw();
             Renderer::BulkText::getInstance().draw(window->getSize());
 
             auto quit = Events::Input::getInstance().HandleEvent();
-
             if (quit) return false;
 
             update();

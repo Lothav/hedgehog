@@ -41,14 +41,17 @@ namespace Renderer
         // Six vetices = 2 triangles.
         std::array<GLfloat, SIZE_VERTICES> vertices_;
 
-        GLuint texture_id_;
         GLuint vbo_;
+
+    protected:
+
+        GLuint texture_id_;
 
     public:
 
-        Object2D(Position position, Size size);
-
         void setTexture(const std::string& path, const GLenum format);
+
+        Object2D(Position position, Size size);
 
         GLuint getTextureId();
 

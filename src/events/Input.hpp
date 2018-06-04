@@ -28,6 +28,7 @@ namespace Events
         {
             SDL_Event e;
             while (SDL_PollEvent(&e)) {
+
                 auto mouseX = e.motion.x;
 
                 if (e.type == SDL_QUIT || (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_q)) {

@@ -18,7 +18,7 @@ namespace Renderer {
 
     public:
 
-        Window(std::string name, std::array<int, 2> size) : size_(size), window(nullptr), renderer(nullptr)
+        Window(const std::string& name, std::array<int, 2> size) : size_(size), window(nullptr), renderer(nullptr)
         {
             if (SDL_Init(SDL_INIT_VIDEO) < 0) {
                 std::cout << "Could not initialize sdl2: " << SDL_GetError();

@@ -42,6 +42,8 @@ namespace Renderer
 
         bool fixed_;
 
+        bool has_depth_;
+
     protected:
 
         // Current texture id
@@ -52,9 +54,9 @@ namespace Renderer
 
     public:
 
-        void setTexture(const std::string& path, const GLenum format);
+        Object2D(Position position, Size size, bool fixed, bool has_depth);
 
-        Object2D(Position position, Size size, bool fixed);
+        void setTexture(const std::string& path, const GLenum format);
 
         GLuint getTextureId();
 
@@ -65,6 +67,11 @@ namespace Renderer
         bool getFixed() const
         {
             return this->fixed_;
+        }
+
+        bool hasDepth() const
+        {
+            return this->has_depth_;
         }
 
         void * operator new (std::size_t size);

@@ -78,10 +78,12 @@ int main(int argc, char* argv[])
         text_velocity->setText("Test");
         Renderer::BulkText::getInstance().push_back(text_velocity);
 
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glDepthFunc(GL_LESS);
 
-        auto camera = new Renderer::Camera(Renderer::BulkObject2D::getInstance().GetShaderProgram());
+        glAlphaFunc(GL_GREATER, 0.9);
+        glEnable(GL_ALPHA_TEST);
+
+        auto camera = new Renderer::Camera(Renderer::BulkObject2D::getInstance().GetShaderProgram(), window_default_size);
 
         auto loop = [&]() -> bool {
 
@@ -89,7 +91,7 @@ int main(int argc, char* argv[])
 
             // Set screen to black
             glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             player->updateAnimationFrame();
 

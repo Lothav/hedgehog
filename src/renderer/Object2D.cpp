@@ -4,23 +4,24 @@
 
 #include "Object2D.hpp"
 
-Renderer::Object2D::Object2D(Position position, Size size, bool fixed) : fixed_(fixed), pos_(position), size_(size), vbo_(0), vertices_({}), texture_id_(0)
+Renderer::Object2D::Object2D(Position position, Size size, bool fixed, bool has_depth) : fixed_(fixed), pos_(position), size_(size), has_depth_(has_depth), vbo_(0), vertices_({}), texture_id_(0)
 {
-    auto x = position.x;
-    auto y = position.y;
+    GLfloat x = position.x;
+    GLfloat y = position.y;
+    GLfloat z = position.z;
 
     auto width = size.width;
     auto height = size.height;
 
     this->vertices_ = {
-            // Triangles                                                c ___
-            x + (width/2.f), y + (height/2.f), 0.0f, 1.0f, 0.0f, // a    |  /a
-            x - (width/2.f), y - (height/2.f), 0.0f, 0.0f, 1.0f, // b    | /
-            x - (width/2.f), y + (height/2.f), 0.0f, 0.0f, 0.0f, // c   b|/
+        // Triangles                                             c ___
+        x + (width/2.f), y + (height/2.f), z, 1.0f, 0.0f, // a    |  /a
+        x - (width/2.f), y - (height/2.f), z, 0.0f, 1.0f, // b    | /
+        x - (width/2.f), y + (height/2.f), z, 0.0f, 0.0f, // c   b|/
 
-            x + (width/2.f), y + (height/2.f), 0.0f, 1.0f, 0.0f, // d       /|d
-            x - (width/2.f), y - (height/2.f), 0.0f, 0.0f, 1.0f, // e      / |
-            x + (width/2.f), y - (height/2.f), 0.0f, 1.0f, 1.0f, // f    e/__|f
+        x + (width/2.f), y + (height/2.f), z, 1.0f, 0.0f, // d       /|d
+        x - (width/2.f), y - (height/2.f), z, 0.0f, 1.0f, // e      / |
+        x + (width/2.f), y - (height/2.f), z, 1.0f, 1.0f, // f    e/__|f
     };
 
     glGenBuffers(1, &this->vbo_);

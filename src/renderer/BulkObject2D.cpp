@@ -56,25 +56,25 @@ void Renderer::BulkObject2D::draw(Renderer::Camera *camera)
 
     for (const auto &object2d : objects2d_) {
 
-        camera->update(object2d->getFixed());
-
-        auto object2d_ptr = object2d;
-        if (!object2d_ptr) {
-            std::cerr << "Object2D pointer not valid!" << std::endl;
-            continue;
+        if (object2d->hasDepth()) {
+            glEnable(GL_DEPTH_TEST);
+        } else {
+            glDisable(GL_DEPTH_TEST);
         }
 
+        camera->update(object2d->getFixed());
+
         GLsizei stride = COORDINATES_BY_VERTEX * sizeof(GLfloat);
-        glBindBuffer(GL_ARRAY_BUFFER, object2d_ptr->getVBO());
+        glBindBuffer(GL_ARRAY_BUFFER, object2d->getVBO());
         glVertexAttribPointer(this->shader_vert_pos_, 3, GL_FLOAT, GL_TRUE, stride, nullptr);
         glVertexAttribPointer(this->shader_uv_pos_, 2, GL_FLOAT, GL_TRUE, stride, (const GLvoid*)(3 * sizeof(GLfloat)));
 
-        auto texture_id = object2d_ptr->getTextureId();
+        auto texture_id = object2d->getTextureId();
         glActiveTexture(GL_TEXTURE0 + texture_id);
         glBindTexture(GL_TEXTURE_2D, texture_id);
         glUniform1i(this->shader_tex_pos_, texture_id);
 
-        auto vertices = object2d_ptr->getVertices();
+        auto vertices = object2d->getVertices();
         glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), vertices.data(), GL_STATIC_DRAW);
         glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(vertices.size()));
     }

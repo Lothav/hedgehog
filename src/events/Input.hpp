@@ -43,26 +43,32 @@ namespace Events
                     switch (e.key.keysym.sym) {
 
                         case SDLK_w:
-                            //player->move(.0f, .01f);
-                            camera->move({.0f, -.01f, .0f});
+                            player->move(.0f, .01f);
+                            //camera->move({.0f, -.01f, .0f});
                             break;
 
                         case SDLK_a:
-                            //player->move(-.01f, .0f);
-                            camera->move({.01f, .0f, .0f});
+                            player->move(-.01f, .0f);
+                            //camera->move({.01f, .0f, .0f});
                             break;
 
                         case SDLK_s:
-                            //player->move(.0f, -.01f);
-                            camera->move({.0f, .01f, .0f});
+                            player->move(.0f, -.01f);
+                            //camera->move({.0f, .01f, .0f});
                             break;
 
                         case SDLK_d:
-                            //player->move(.01f, .0f);
-                            camera->move({-.01f, .0f, .0f});
+                            player->move(.01f, .0f);
+                            //camera->move({-.01f, .0f, .0f});
                             break;
 
                         case SDLK_r:
+                            camera->move({.0f, .0f, .01f});
+                            break;
+
+                        case SDLK_e:
+                            camera->move({.0f, .0f, -.01f});
+                            break;
 
                         default:
                             break;

@@ -45,16 +45,17 @@ void Renderer::Map::loadLayersFromTmxFile(const std::string& path, const GLfloat
                 auto offset_h = static_cast<GLfloat>(img->GetHeight()) / static_cast<GLfloat>(map_instance->GetTileHeight());
 
                 auto tile_obj2d = new Renderer::Object2D(
-                        Position {
-                                .x =  ((x - y) * (w / (2.f*offset_w))),
-                                .y = -((x + y) * (h / (2.f*offset_h))),
-                                .z = 0.f
-                        },
-                        Size {
-                                .height = h,
-                                .width  = w,
-                        },
-                        false
+                    Position {
+                        .x =  ((x - y) * (w / (2.f*offset_w))),
+                        .y = -((x + y) * (h / (2.f*offset_h))),
+                        .z = i
+                    },
+                    Size {
+                        .height = h,
+                        .width  = w,
+                    },
+                    false,
+                    i == 1 || i == 2
                 );
 
                 tile_obj2d->setTexture("./data/maps/" + img->GetSource(), GL_RGBA);

@@ -14,6 +14,12 @@
 #include "events/Input.hpp"
 #include "renderer/Player.hpp"
 
+#include <assimp/scene.h>
+#include <assimp/cimport.h>
+#include <assimp/Importer.hpp>
+#include <assimp/postprocess.h>
+#include <assimp/cexport.h>
+
 void update()
 {
 
@@ -32,6 +38,18 @@ int main(int argc, char* argv[])
         std::cerr << "Could not initialize IMG's flags" << std::endl;
         return EXIT_FAILURE;
     }
+
+    Assimp::Importer Importer;
+    const aiScene* pScene = Importer.ReadFile("data/wolf/Wolf/Wolf_One_dae.dae", aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices);
+
+    if (pScene->HasMeshes()) {
+        for (int i = 0; i < pScene->mNumMeshes; i++) {
+            //Position pos{.x = , .y = , .z = };
+            //Size size{};
+            //auto* object = new Renderer::Object2D();
+        }
+    }
+
 
     {
         SDL_DisplayMode DM;

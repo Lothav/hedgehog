@@ -4,3 +4,6 @@
 [submodule "vendor/lib/tinyxml2"]
 	path = vendor/lib/tinyxml2
 	url = https://github.com/leethomason/tinyxml2
+[submodule "vendor/include/assimp"]
+	path = vendor/include/assimp
+	url = https://github.com/assimp/assimp

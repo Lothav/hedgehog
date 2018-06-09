@@ -7,9 +7,12 @@ set(TINYXML2_LIBRARIES tinyxml2)
 include_directories(/usr/include/freetype2)
 include_directories(vendor/include/tmxparser/src)
 include_directories(vendor/lib/tinyxml2)
+include_directories(vendor/include/assimp/include)
+include_directories(vendor/include/assimp/code)
 
 add_subdirectory(vendor/lib/tinyxml2 ../vendor/lib/tinyxml2)
 add_subdirectory(vendor/include/tmxparser ../vendor/include/tmxparser/src)
+add_subdirectory(vendor/include/assimp ../vendor/include/assimp)
 
 find_path(TMXPARSER_INCLUDE_DIR NAMES ../vendor/include/tmxparser/src/Tmx.h
         DOC "The tmxparser include directory"
@@ -59,6 +62,8 @@ add_executable(
         src/events/Input.hpp
         src/renderer/Player.cpp
         src/renderer/Player.hpp
-        src/renderer/Camera.cpp src/renderer/Camera.hpp)
+        src/renderer/Camera.cpp
+        src/renderer/Camera.hpp
+)
 
-target_link_libraries(launcher SDL2 SDL2_image GL GLEW freetype tmxparser)
+target_link_libraries(launcher SDL2 SDL2_image GL GLEW freetype tmxparser assimp)

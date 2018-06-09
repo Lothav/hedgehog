@@ -48,7 +48,7 @@ void Renderer::Map::loadLayersFromTmxFile(const std::string& path, const GLfloat
                     Position {
                         .x =  ((x - y) * (w / (2.f*offset_w))),
                         .y = -((x + y) * (h / (2.f*offset_h))),
-                        .z = i
+                        .z = 0.f
                     },
                     Size {
                         .height = h,

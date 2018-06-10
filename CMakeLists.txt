@@ -64,6 +64,6 @@ add_executable(
         src/renderer/Player.hpp
         src/renderer/Camera.cpp
         src/renderer/Camera.hpp
-)
+        src/renderer/Object3D.cpp src/renderer/Object3D.hpp)
 
 target_link_libraries(launcher SDL2 SDL2_image GL GLEW freetype tmxparser assimp)
